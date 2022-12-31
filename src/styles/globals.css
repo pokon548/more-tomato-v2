@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .main-tomato-container {
+    @apply flex flex-col flex-1 h-64;
+  }
+
+  .main-tomato-clock-plate {
+    @apply flex h-52 w-52 sm:w-60 sm:h-60 border-2 border-white rounded-full opacity-10;
+  }
+  .main-tomato-clock-input {
+    @apply flex h-52 w-52 sm:w-60 sm:h-60 absolute text-center text-4xl sm:text-5xl text-white outline-0 bg-transparent;
+  }
+}
