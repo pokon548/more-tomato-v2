@@ -112,6 +112,9 @@ export default function Tomato() {
     inRelaxTermPause,
     currentTimeInSeconds,
     nextPhase,
+    dispatch,
+    inLongTermRelaxing,
+    inShortTermRelaxing
   ]);
 
   return (
