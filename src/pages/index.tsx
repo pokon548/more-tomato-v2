@@ -5,7 +5,7 @@ import { useAppSelector } from "../redux/hooks";
 import { CiTimer, CiCloud, CiSettings } from "react-icons/ci";
 import { IconContext } from "react-icons";
 
-import useSWR, { Fetcher, SWRConfig, useSWRConfig } from "swr";
+import useSWR, { Key, Fetcher, SWRConfig, useSWRConfig } from "swr";
 
 import Link from "next/link";
 
@@ -13,9 +13,8 @@ export default function Home() {
   const t = useTranslations("Home");
   const themeType = useAppSelector((state) => state.theme.type);
 
-  const { data, error } = useSWR(
-    "https://v1.jinrishici.com/rensheng/lizhi",
-    (key) => {}
+  const { data, error } = useSWR<string>(
+    "https://v1.jinrishici.com/rensheng/lizhi.txt"
   );
 
   return (
@@ -30,10 +29,10 @@ export default function Home() {
         <main className="backdrop-brightness-65 h-full w-full">
           <div className="flex flex-col h-full">
             <h1 className="text-4xl font-bold text-white pl-8 md:pl-10 lg:pl-12 pt-10 md:pt-12 lg:pt-14">
-              {t('title_head')}
+              {t("title_head")}
             </h1>
             <div className="text-xl text-slate-200 pl-8 md:pl-10 lg:pl-12 pt-2">
-              {error || !data ? "" : data.content}
+              {error || !data ? "" : data}
             </div>
             <div className="flex h-full gap-x-64 gap-y-4 justify-center items-center">
               <div className="bottomArea">
