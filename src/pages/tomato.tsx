@@ -131,7 +131,9 @@ export default function Tomato() {
         className={
           useUnsplash
             ? "bg-main-unsplash bg-center bg-cover h-screen"
-            : inShortTermRelaxing || inLongTermRelaxing
+            : inShortTermRelaxing ||
+              inLongTermRelaxing ||
+              (nextPhase.includes("break") && !inWorkTerm)
             ? "bg-main-emerald bg-center bg-cover h-screen"
             : "bg-main-blue bg-center bg-cover h-screen"
         }
