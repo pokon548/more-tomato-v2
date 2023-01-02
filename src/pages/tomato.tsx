@@ -157,7 +157,7 @@ export default function Tomato() {
                   >
                     <IconContext.Provider
                       value={{
-                        color: dimmingBackground ? "rgba(255 255 255 0.4)" : "white",
+                        color: dimmingBackground ? "rgba(255, 255, 255, 0.4)" : "white",
                         size: "2.5rem",
                       }}
                     >
@@ -302,7 +302,7 @@ export default function Tomato() {
                     >
                       <IconContext.Provider
                         value={{
-                          color: inWorkTerm ? "rgba(255 255 255 0.4)" : "white",
+                          color: inWorkTerm ? "rgba(255, 255, 255, 0.4)" : "white",
                           size: "2rem",
                         }}
                       >
