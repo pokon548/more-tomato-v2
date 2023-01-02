@@ -72,7 +72,11 @@ export default function Tomato() {
 
   const nextPhase = useAppSelector((state) => state.clock.nextPhase);
 
-  const [useUnsplash, setUseUnsplash] = useLocalStorageState("useUnsplash", {
+  const [useUnsplash] = useLocalStorageState("useUnsplash", {
+    defaultValue: true,
+  });
+
+  const [blurWhenFocusing] = useLocalStorageState("blurWhenFocusing", {
     defaultValue: true,
   });
 
@@ -83,12 +87,9 @@ export default function Tomato() {
     { name: gt("color_rose"), index: 3 },
   ];
 
-  const [selectedColor, setSelectedColor] = useLocalStorageState(
-    "colorOption",
-    {
-      defaultValue: colorOptions[0],
-    }
-  );
+  const [selectedColor] = useLocalStorageState("colorOption", {
+    defaultValue: colorOptions[0],
+  });
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -101,7 +102,7 @@ export default function Tomato() {
         if (!inShortTermRelaxing || inRelaxTermPause) {
           clearInterval(timer);
 
-          setDimmingBackground(false);
+          if (blurWhenFocusing) setDimmingBackground(false);
         }
       }
     }
@@ -111,7 +112,7 @@ export default function Tomato() {
     // 如果当前时间已经小于等于 0，终止计时并设置状态
     if (currentTimeInSeconds <= 0) {
       clearInterval(timer);
-      setDimmingBackground(false);
+      if (blurWhenFocusing) setDimmingBackground(false);
 
       if (inWorkTerm || inLongTermRelaxing || inShortTermRelaxing) {
         const audio = new Audio("/public_alert.wav");
@@ -189,7 +190,7 @@ export default function Tomato() {
                       dispatch(setCurrentTimeInSeconds(0));
                       dispatch(setNextPhase("work"));
 
-                      setDimmingBackground(false);
+                      if (blurWhenFocusing) setDimmingBackground(false);
                     }}
                   >
                     <IconContext.Provider
@@ -317,7 +318,7 @@ export default function Tomato() {
                       className="bg-white/40 px-8 py-8 rounded-full transition-all"
                       onClick={() => {
                         dispatch(resumeClock());
-                        if (inWorkTerm) {
+                        if (inWorkTerm && blurWhenFocusing) {
                           setDimmingBackground(true);
                         }
                       }}
@@ -361,7 +362,7 @@ export default function Tomato() {
                         dispatch(
                           setCurrentTimeInSeconds(Number(workingTime * 60))
                         );
-                        setDimmingBackground(true);
+                        if (blurWhenFocusing) setDimmingBackground(true);
                         if (tookShortRelax) {
                           dispatch(setTookShortRelax(false));
                           dispatch(setNextPhase("long_break"));

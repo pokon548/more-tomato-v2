@@ -33,6 +33,13 @@ export default function Home() {
     defaultValue: true,
   });
 
+  const [blurWhenFocusing, setBlurWhenFocusing] = useLocalStorageState(
+    "blurWhenFocusing",
+    {
+      defaultValue: true,
+    }
+  );
+
   const colorOptions = [
     { name: gt("color_blue"), index: 0 },
     { name: gt("color_amber"), index: 1 },
@@ -71,8 +78,7 @@ export default function Home() {
                     使用来自 Unsplash 的自然壁纸
                   </span>
                   <span className="font-light text-sm text-slate-700">
-                    背景会被替换为 Unsplash
-                    的随机自然背景图，而不是默认的纯色渐变效果
+                    背景会被替换为 Unsplash 的随机自然背景图，而不是纯色渐变效果
                   </span>
                 </div>
                 <div className="pl-4 flex items-center setting-switch">
@@ -124,7 +130,7 @@ export default function Home() {
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0"
                       >
-                        <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                        <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-20">
                           {colorOptions.map((color, colorIdx) => (
                             <Listbox.Option
                               key={colorIdx}
@@ -162,6 +168,37 @@ export default function Home() {
                       </Transition>
                     </div>
                   </Listbox>
+                </div>
+              </div>
+              <div className="flex setting-item">
+                <div className="flex flex-col setting-description">
+                  <span className="font-medium">在专注时模糊背景图像</span>
+                  <span className="font-light text-sm text-slate-700">
+                    在您处于专注时刻时，番茄钟会自动模糊背景，以减少视觉干扰
+                    <span className="text-slate-400">
+                      <br />
+                      该选项仅在您开启了 Unsplash 背景图时才起作用
+                    </span>
+                  </span>
+                </div>
+                <div className="pl-4 flex items-center setting-switch">
+                  <Switch
+                    checked={blurWhenFocusing}
+                    onChange={setBlurWhenFocusing}
+                    className={`${
+                      blurWhenFocusing ? "bg-teal-900" : "bg-teal-700"
+                    }
+          relative inline-flex h-[24px] w-[52px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
+                  >
+                    <span className="sr-only">Use setting</span>
+                    <span
+                      aria-hidden="true"
+                      className={`${
+                        blurWhenFocusing ? "translate-x-7" : "translate-x-0"
+                      }
+            pointer-events-none inline-block h-[20px] w-[20px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
+                    />
+                  </Switch>
                 </div>
               </div>
             </div>
