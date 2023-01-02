@@ -10,6 +10,10 @@ export default function LiftSongDialog() {
     (state) => state.setting.liftSongDialogOpened
   );
 
+  const [enableLiftSong] = useLocalStorageState("enableLiftSong", {
+    defaultValue: true,
+  });
+
   const playSound = useAppSelector((state) => state.setting.playSound);
   const playSoundVolume = useAppSelector(
     (state) => state.setting.playSoundVolume
@@ -37,9 +41,9 @@ export default function LiftSongDialog() {
         <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
           <Dialog.Panel className="px-4 py-4 w-full max-w-sm rounded bg-white">
-            <Dialog.Title className="text-lg font-bold">激励音乐</Dialog.Title>
+            <Dialog.Title className="text-lg font-bold">背景音乐</Dialog.Title>
             <span className="font-light text-sm text-slate-700">
-              你可以在这里设置激励音乐。设置好的音频会在专注时自动循环播放。
+              你可以在这里设置背景音乐。设置好的音频会在专注时自动循环播放。设置自动保存。
               <br />
               注意：你也可以设置视频作为音频来源！请参考{" "}
               <a
@@ -68,7 +72,7 @@ export default function LiftSongDialog() {
             <div className="playerWrapper pt-4">
               <ReactPlayer
                 url={liftSongURL}
-                playing={playSound}
+                playing={enableLiftSong ? playSound : false}
                 controls={!playSound}
                 loop={true}
                 volume={playSoundVolume}

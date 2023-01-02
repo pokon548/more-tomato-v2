@@ -106,6 +106,10 @@ export default function Tomato() {
     defaultValue: colorOptions[0],
   });
 
+  const [enableLiftSong] = useLocalStorageState("enableLiftSong", {
+    defaultValue: true,
+  });
+
   // 在 4 秒前开始自动减小激励音乐声音
   useEffect(() => {
     if (playSound && currentTimeInSeconds <= 4 && currentVolume > 0) {
@@ -270,15 +274,17 @@ export default function Tomato() {
                     : t("take_long_break")}
                 </span>
                 <div className="grow flex justify-end">
-                  <button
-                    onClick={() => dispatch(setLiftSongDialogOpened(true))}
-                  >
-                    <IconContext.Provider
-                      value={{ color: "white", size: "2rem" }}
+                  {enableLiftSong ? (
+                    <button
+                      onClick={() => dispatch(setLiftSongDialogOpened(true))}
                     >
-                      <CiMusicNote1 />
-                    </IconContext.Provider>
-                  </button>
+                      <IconContext.Provider
+                        value={{ color: "white", size: "2rem" }}
+                      >
+                        <CiMusicNote1 />
+                      </IconContext.Provider>
+                    </button>
+                  ) : null}
                 </div>
               </div>
             </h1>
