@@ -15,5 +15,11 @@
     "relaxing": "Relaxing",
     "pause_relax": "Paused",
     "minute(s)": "mins"
+  },
+  "Global": {
+    "color_blue": "Blue",
+    "color_amber": "Amber",
+    "color_fuchsia": "Fuchsia",
+    "color_rose": "Rose"
   }
 }

@@ -28,6 +28,7 @@ import { useEffect, useRef, useState } from "react";
 
 export default function Tomato() {
   const t = useTranslations("Tomato");
+  const gt = useTranslations("Global");
   const themeType = useAppSelector((state) => state.theme.type);
 
   const [workingTime, setWorkingTime] = useLocalStorageState("workingTime", {
@@ -74,6 +75,20 @@ export default function Tomato() {
   const [useUnsplash, setUseUnsplash] = useLocalStorageState("useUnsplash", {
     defaultValue: true,
   });
+
+  const colorOptions = [
+    { name: gt("color_blue"), index: 0 },
+    { name: gt("color_amber"), index: 1 },
+    { name: gt("color_fuchsia"), index: 2 },
+    { name: gt("color_rose"), index: 3 },
+  ];
+
+  const [selectedColor, setSelectedColor] = useLocalStorageState(
+    "colorOption",
+    {
+      defaultValue: colorOptions[0],
+    }
+  );
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -135,7 +150,13 @@ export default function Tomato() {
               inLongTermRelaxing ||
               (nextPhase.includes("break") && !inWorkTerm)
             ? "bg-main-emerald bg-center bg-cover h-screen"
-            : "bg-main-blue bg-center bg-cover h-screen"
+            : selectedColor.index == colorOptions[0].index
+            ? "bg-main-blue bg-center bg-cover h-screen"
+            : selectedColor.index == colorOptions[1].index
+            ? "bg-main-amber bg-center bg-cover h-screen"
+            : selectedColor.index == colorOptions[2].index
+            ? "bg-main-fuchsia bg-center bg-cover h-screen"
+            : "bg-main-rose bg-center bg-cover h-screen"
         }
       >
         <main

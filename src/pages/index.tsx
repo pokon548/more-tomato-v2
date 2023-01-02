@@ -3,17 +3,20 @@ import Head from "next/head";
 import { useAppSelector } from "../redux/hooks";
 
 import { CiTimer, CiCloud, CiSettings } from "react-icons/ci";
+import { HiChevronDown, HiCheck } from "react-icons/hi";
 import { IconContext } from "react-icons";
 
 import useSWR, { Key, Fetcher, SWRConfig, useSWRConfig } from "swr";
 
 import Link from "next/link";
-import { useState } from "react";
-import { Dialog, Switch } from "@headlessui/react";
+import { Fragment, useState } from "react";
+import { Dialog, Listbox, Switch, Transition } from "@headlessui/react";
 import useLocalStorageState from "use-local-storage-state";
 
 export default function Home() {
   const t = useTranslations("Home");
+  const gt = useTranslations("Global");
+
   const themeType = useAppSelector((state) => state.theme.type);
 
   const { data, error } = useSWR<string>(
@@ -22,9 +25,27 @@ export default function Home() {
 
   let [isOpenSettings, setIsOpenSettings] = useState(false);
 
+  /* 设置区域
+   * TODO: 迁移到单独的组件页面里
+   */
+
   const [useUnsplash, setUseUnsplash] = useLocalStorageState("useUnsplash", {
     defaultValue: true,
   });
+
+  const colorOptions = [
+    { name: gt("color_blue"), index: 0 },
+    { name: gt("color_amber"), index: 1 },
+    { name: gt("color_fuchsia"), index: 2 },
+    { name: gt("color_rose"), index: 3 },
+  ];
+
+  const [selectedColor, setSelectedColor] = useLocalStorageState(
+    "colorOption",
+    {
+      defaultValue: colorOptions[0],
+    }
+  );
 
   return (
     <>
@@ -43,7 +64,7 @@ export default function Home() {
         <div className="fixed inset-0 flex items-center justify-center p-4">
           <Dialog.Panel className="px-4 py-4 w-full max-w-sm rounded bg-white">
             <Dialog.Title className="text-lg font-bold">设置</Dialog.Title>
-            <div className="flex flex-col settings-area pt-4">
+            <div className="flex flex-col settings-area pt-4 gap-y-4">
               <div className="flex setting-item">
                 <div className="flex flex-col setting-description">
                   <span className="font-medium">
@@ -72,6 +93,77 @@ export default function Home() {
                   </Switch>
                 </div>
               </div>
+              <div className="flex setting-item">
+                <div className="flex flex-col setting-description">
+                  <span className="font-medium">背景颜色</span>
+                  <span className="font-light text-sm text-slate-700">
+                    设置番茄钟在非休息时间的背景色
+                    <span className="text-slate-400">
+                      <br />
+                      该选项仅在您关闭了 Unsplash 背景图时才起作用
+                    </span>
+                  </span>
+                </div>
+                <div className="pl-4 flex items-center setting-switch grow justify-end">
+                  <Listbox value={selectedColor} onChange={setSelectedColor}>
+                    <div className="relative mt-1">
+                      <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left ring-1 ring-gray-300 focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                        <span className="block truncate">
+                          {colorOptions[selectedColor.index].name}
+                        </span>
+                        <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          <HiChevronDown
+                            className="h-5 w-5 text-gray-400"
+                            aria-hidden="true"
+                          />
+                        </span>
+                      </Listbox.Button>
+                      <Transition
+                        as={Fragment}
+                        leave="transition ease-in duration-100"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0"
+                      >
+                        <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                          {colorOptions.map((color, colorIdx) => (
+                            <Listbox.Option
+                              key={colorIdx}
+                              className={({ active }) =>
+                                `relative cursor-default select-none py-2 pl-3 pr-4 ${
+                                  active
+                                    ? "bg-amber-100 text-amber-900"
+                                    : "text-gray-900"
+                                }`
+                              }
+                              value={color}
+                            >
+                              {({ selected }) => (
+                                <>
+                                  <span
+                                    className={`block truncate ${
+                                      selected ? "font-medium" : "font-normal"
+                                    }`}
+                                  >
+                                    {color.name}
+                                  </span>
+                                  {selected ? (
+                                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                                      <HiCheck
+                                        className="h-5 w-5"
+                                        aria-hidden="true"
+                                      />
+                                    </span>
+                                  ) : null}
+                                </>
+                              )}
+                            </Listbox.Option>
+                          ))}
+                        </Listbox.Options>
+                      </Transition>
+                    </div>
+                  </Listbox>
+                </div>
+              </div>
             </div>
           </Dialog.Panel>
         </div>
@@ -80,7 +172,13 @@ export default function Home() {
         className={
           useUnsplash
             ? "bg-main-unsplash bg-center bg-cover h-screen"
-            : "bg-main-blue bg-center bg-cover h-screen"
+            : selectedColor.index == colorOptions[0].index
+            ? "bg-main-blue bg-center bg-cover h-screen"
+            : selectedColor.index == colorOptions[1].index
+            ? "bg-main-amber bg-center bg-cover h-screen"
+            : selectedColor.index == colorOptions[2].index
+            ? "bg-main-fuchsia bg-center bg-cover h-screen"
+            : "bg-main-rose bg-center bg-cover h-screen"
         }
       >
         <main

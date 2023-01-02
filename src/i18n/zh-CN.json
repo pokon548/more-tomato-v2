@@ -15,5 +15,11 @@
     "relaxing": "正在休息",
     "pause_relax": "暂停休息",
     "minute(s)": "分钟"
+  },
+  "Global": {
+    "color_blue": "天空蓝",
+    "color_amber": "朝阳橙",
+    "color_fuchsia": "魅力紫",
+    "color_rose": "玫瑰红"
   }
 }
