@@ -1,6 +1,19 @@
 {
   "Home": {
     "title_head": "随风 V2",
-    "title": "你好，世界！"
+    "pomodoro": "番茄钟",
+    "breathe": "呼吸（开发中）",
+    "settings": "设置（开发中）"
+  },
+  "Tomato": {
+    "title_head": "开始专注",
+    "begin_focus": "开始专注",
+    "focusing": "正在专注",
+    "pause_focus": "暂停专注",
+    "take_short_break": "开始短休息",
+    "take_long_break": "开始长休息",
+    "relaxing": "正在休息",
+    "pause_relax": "暂停休息",
+    "minute(s)": "分钟"
   }
 }

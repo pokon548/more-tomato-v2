@@ -1,6 +1,19 @@
 {
   "Home": {
-    "title_head": "Cosy Tomato",
-    "title": "Hello, World!"
+    "title_head": "Cosy Tomato V2",
+    "pomodoro": "Pomodoro",
+    "breathe": "Breathe (Under development)",
+    "settings": "Settings (Under development)"
+  },
+  "Tomato": {
+    "title_head": "Focus",
+    "begin_focus": "Focus",
+    "focusing": "Focusing",
+    "pause_focus": "Paused",
+    "take_short_break": "Short break",
+    "take_long_break": "Long break",
+    "relaxing": "Relaxing",
+    "pause_relax": "Paused",
+    "minute(s)": "mins"
   }
 }

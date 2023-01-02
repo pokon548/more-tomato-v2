@@ -13,4 +13,8 @@
   .main-tomato-clock-input {
     @apply flex h-52 w-52 sm:w-60 sm:h-60 absolute text-center text-4xl sm:text-5xl text-white outline-0 bg-transparent;
   }
+
+  .bottomArea {
+    @apply grid grid-cols-1 justify-items-center
+  }
 }

@@ -27,7 +27,7 @@ import "react-circular-progressbar/dist/styles.css";
 import { useEffect, useRef, useState } from "react";
 
 export default function Tomato() {
-  const t = useTranslations("Home");
+  const t = useTranslations("Tomato");
   const themeType = useAppSelector((state) => state.theme.type);
 
   const [workingTime, setWorkingTime] = useLocalStorageState("workingTime", {
@@ -112,7 +112,7 @@ export default function Tomato() {
     nextPhase,
     dispatch,
     inLongTermRelaxing,
-    inShortTermRelaxing
+    inShortTermRelaxing,
   ]);
 
   return (
@@ -157,7 +157,9 @@ export default function Tomato() {
                   >
                     <IconContext.Provider
                       value={{
-                        color: dimmingBackground ? "rgba(255, 255, 255, 0.4)" : "white",
+                        color: dimmingBackground
+                          ? "rgba(255, 255, 255, 0.4)"
+                          : "white",
                         size: "2.5rem",
                       }}
                     >
@@ -178,17 +180,17 @@ export default function Tomato() {
                 <span className="pl-4">
                   {inWorkTerm
                     ? inWorkTermPause
-                      ? "暂停专注"
-                      : "正在专注"
+                      ? t("pause_focus")
+                      : t("focusing")
                     : inShortTermRelaxing || inLongTermRelaxing
                     ? inRelaxTermPause
-                      ? "暂停休息"
-                      : "正在休息"
+                      ? t("pause_relax")
+                      : t("relaxing")
                     : nextPhase == "work"
-                    ? "开始专注"
+                    ? t("begin_focus")
                     : nextPhase == "short_break"
-                    ? "开始短休息"
-                    : "开始长休息"}
+                    ? t("take_short_break")
+                    : t("take_long_break")}
                 </span>
               </div>
             </h1>
@@ -235,7 +237,7 @@ export default function Tomato() {
                   <div className="main-tomato-clock-plate" />
                   <div className="flex flex-row-reverse absolute h-52 w-52 sm:w-60 sm:h-60">
                     <div className="flex text-sm sm:text-lg items-center text-white align-middle mr-10 sm:mr-9 opacity-70">
-                      分钟
+                      {t("minute(s)")}
                     </div>
                   </div>
                   <input
@@ -302,7 +304,9 @@ export default function Tomato() {
                     >
                       <IconContext.Provider
                         value={{
-                          color: inWorkTerm ? "rgba(255, 255, 255, 0.4)" : "white",
+                          color: inWorkTerm
+                            ? "rgba(255, 255, 255, 0.4)"
+                            : "white",
                           size: "2rem",
                         }}
                       >

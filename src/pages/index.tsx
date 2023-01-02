@@ -46,7 +46,7 @@ export default function Home() {
                   </button>
                 </Link>
                 <div className="text-white/80 text-center pt-4 text-lg">
-                  番茄钟
+                  {t("pomodoro")}
                 </div>
               </div>
               <div className="bottomArea">
@@ -58,7 +58,7 @@ export default function Home() {
                   </IconContext.Provider>
                 </button>
                 <div className="text-white/80 text-center pt-4 text-lg">
-                  呼吸（开发中）
+                  {t("breathe")}
                 </div>
               </div>
               <div className="bottomArea">
@@ -70,7 +70,7 @@ export default function Home() {
                   </IconContext.Provider>
                 </button>
                 <div className="text-white/80 text-center pt-4 text-lg">
-                  设置（开发中）
+                  {t("settings")}
                 </div>
               </div>
             </div>
