@@ -25,17 +25,8 @@ import {
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-
-// 用于修复组件渲染两次，所导致的状态不一致问题
-function useIsServerRender() {
-  return useSyncExternalStore(
-    () => {
-      return () => {};
-    },
-    () => false,
-    () => true
-  );
-}
+import { colorOptions } from "../settings/SettingsProps";
+import useIsServerRender from "../components/general/ServerRender";
 
 export default function Tomato() {
   const t = useTranslations("Tomato");
@@ -91,13 +82,6 @@ export default function Tomato() {
   const [blurWhenFocusing] = useLocalStorageState("blurWhenFocusing", {
     defaultValue: true,
   });
-
-  const colorOptions = [
-    { name: gt("color_blue"), index: 0 },
-    { name: gt("color_amber"), index: 1 },
-    { name: gt("color_fuchsia"), index: 2 },
-    { name: gt("color_rose"), index: 3 },
-  ];
 
   const [selectedColor] = useLocalStorageState("colorOption", {
     defaultValue: colorOptions[0],

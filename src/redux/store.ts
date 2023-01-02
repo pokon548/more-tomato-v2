@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
 import clockReducer from './theme/clockSlice'
 import themeReducer from './theme/themeSlice'
+import settingReducer from './theme/settingSlice'
 // ...
 
 export const store = configureStore({
   reducer: {
     clock: clockReducer,
     theme: themeReducer,
+    setting: settingReducer,
   }
 })
 
