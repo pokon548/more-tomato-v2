@@ -22,8 +22,6 @@ import {
   startLongRelaxClock,
 } from "../redux/theme/clockSlice";
 
-import { AudioPlayerProvider, useAudioPlayer } from "react-use-audio-player";
-
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useEffect, useRef, useState } from "react";
