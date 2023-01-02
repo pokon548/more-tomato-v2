@@ -279,7 +279,12 @@ export default function Tomato() {
                       onClick={() => dispatch(setLiftSongDialogOpened(true))}
                     >
                       <IconContext.Provider
-                        value={{ color: "white", size: "2rem" }}
+                        value={{
+                          color: dimmingBackground
+                            ? "rgba(255, 255, 255, 0.4)"
+                            : "white",
+                          size: "2rem",
+                        }}
                       >
                         <CiMusicNote1 />
                       </IconContext.Provider>
