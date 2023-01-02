@@ -66,7 +66,7 @@ export default function Home() {
           }
         >
           <div className="flex flex-col h-full">
-            <div className="flex px-8 md:pl-10 lg:pl-12 pt-10 md:pt-12 lg:pt-14">
+            <div className="flex px-8 md:px-10 lg:px-12 pt-10 md:pt-12 lg:pt-14">
               <h1 className="text-4xl font-bold text-white">
                 {t("title_head")}
               </h1>

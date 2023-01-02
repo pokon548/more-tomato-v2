@@ -2,7 +2,13 @@ import { useTranslations } from "next-intl";
 import Head from "next/head";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
 
-import { CiCircleChevLeft, CiPlay1, CiPause1 } from "react-icons/ci";
+import {
+  CiCircleChevLeft,
+  CiPlay1,
+  CiPause1,
+  CiSettings,
+  CiMusicNote1,
+} from "react-icons/ci";
 import { IconContext } from "react-icons";
 import Link from "next/link";
 
@@ -27,6 +33,13 @@ import "react-circular-progressbar/dist/styles.css";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { colorOptions } from "../components/settings/SettingsProps";
 import useIsServerRender from "../components/general/ServerRender";
+import ReactPlayer from "react-player/lazy";
+import {
+  setLiftSongDialogOpened,
+  setPlaySound,
+  setPlaySoundVolume,
+} from "../redux/theme/settingSlice";
+import LiftSongDialog from "../components/liftsong/LiftSongDialog";
 
 export default function Tomato() {
   const t = useTranslations("Tomato");
@@ -75,6 +88,12 @@ export default function Tomato() {
 
   const nextPhase = useAppSelector((state) => state.clock.nextPhase);
 
+  const currentVolume = useAppSelector(
+    (state) => state.setting.playSoundVolume
+  );
+
+  const playSound = useAppSelector((state) => state.setting.playSound);
+
   const [useUnsplash] = useLocalStorageState("useUnsplash", {
     defaultValue: true,
   });
@@ -86,6 +105,25 @@ export default function Tomato() {
   const [selectedColor] = useLocalStorageState("colorOption", {
     defaultValue: colorOptions[0],
   });
+
+  // 在 4 秒前开始自动减小激励音乐声音
+  useEffect(() => {
+    if (playSound && currentTimeInSeconds <= 4 && currentVolume > 0) {
+      const timer = setInterval(() => {
+        const afterVolume = currentVolume - 1 / 30;
+
+        if (afterVolume < 0) {
+          dispatch(setPlaySoundVolume(0));
+        } else {
+          dispatch(setPlaySoundVolume(afterVolume));
+        }
+
+        console.log(currentVolume);
+      }, 100);
+
+      return () => clearInterval(timer);
+    }
+  }, [playSound, currentVolume, currentTimeInSeconds]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -103,11 +141,12 @@ export default function Tomato() {
       }
     }
 
-    console.log(nextPhase);
-
     // 如果当前时间已经小于等于 0，终止计时并设置状态
     if (currentTimeInSeconds <= 0) {
       clearInterval(timer);
+
+      dispatch(setPlaySound(false));
+
       if (blurWhenFocusing) setDimmingBackground(false);
 
       if (inWorkTerm || inLongTermRelaxing || inShortTermRelaxing) {
@@ -139,6 +178,7 @@ export default function Tomato() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <LiftSongDialog />
       <div
         className={
           !isServerRender
@@ -171,8 +211,8 @@ export default function Tomato() {
             <h1
               className={
                 dimmingBackground
-                  ? "text-4xl font-bold text-white/40 pl-8 md:pl-10 lg:pl-12 pt-10 md:pt-12 lg:pt-14 transition-all"
-                  : "text-4xl font-bold text-white pl-8 md:pl-10 lg:pl-12 pt-10 md:pt-12 lg:pt-14 transition-all"
+                  ? "text-4xl font-bold text-white/40 px-8 md:px-10 lg:px-12 pt-10 md:pt-12 lg:pt-14 transition-all"
+                  : "text-4xl font-bold text-white px-8 md:px-10 lg:px-12 pt-10 md:pt-12 lg:pt-14 transition-all"
               }
             >
               <div className="flex">
@@ -187,6 +227,7 @@ export default function Tomato() {
                       dispatch(interruptWorkClock());
                       dispatch(setCurrentTimeInSeconds(0));
                       dispatch(setNextPhase("work"));
+                      dispatch(setPlaySound(false));
 
                       if (blurWhenFocusing) setDimmingBackground(false);
                     }}
@@ -228,6 +269,17 @@ export default function Tomato() {
                     ? t("take_short_break")
                     : t("take_long_break")}
                 </span>
+                <div className="grow flex justify-end">
+                  <button
+                    onClick={() => dispatch(setLiftSongDialogOpened(true))}
+                  >
+                    <IconContext.Provider
+                      value={{ color: "white", size: "2rem" }}
+                    >
+                      <CiMusicNote1 />
+                    </IconContext.Provider>
+                  </button>
+                </div>
               </div>
             </h1>
             <div className="flex h-full gap-x-96 gap-y-4 justify-center items-center">
@@ -315,6 +367,7 @@ export default function Tomato() {
                     <button
                       className="bg-white/40 px-8 py-8 rounded-full transition-all"
                       onClick={() => {
+                        dispatch(setPlaySound(true));
                         dispatch(resumeClock());
                         if (inWorkTerm && blurWhenFocusing) {
                           setDimmingBackground(true);
@@ -335,6 +388,7 @@ export default function Tomato() {
                           : "bg-white/40 px-8 py-8 rounded-full transition-all"
                       }
                       onClick={() => {
+                        dispatch(setPlaySound(false));
                         dispatch(pauseClock(inWorkTerm ? false : true));
                       }}
                     >
@@ -361,6 +415,10 @@ export default function Tomato() {
                           setCurrentTimeInSeconds(Number(workingTime * 60))
                         );
                         if (blurWhenFocusing) setDimmingBackground(true);
+
+                        dispatch(setPlaySoundVolume(1));
+                        dispatch(setPlaySound(true));
+
                         if (tookShortRelax) {
                           dispatch(setTookShortRelax(false));
                           dispatch(setNextPhase("long_break"));

@@ -30,6 +30,13 @@ export default function SettingsDialog() {
     }
   );
 
+  const [enableLiftSong, setEnableLiftSong] = useLocalStorageState(
+    "enableLiftSong",
+    {
+      defaultValue: true,
+    }
+  );
+
   const dispatch = useAppDispatch();
 
   return (
@@ -166,6 +173,33 @@ export default function SettingsDialog() {
                     aria-hidden="true"
                     className={`${
                       blurWhenFocusing ? "translate-x-7" : "translate-x-0"
+                    }
+            pointer-events-none inline-block h-[20px] w-[20px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
+                  />
+                </Switch>
+              </div>
+            </div>
+            <div className="flex setting-item">
+              <div className="flex flex-col setting-description">
+                <span className="font-medium">开启背景音</span>
+                <span className="font-light text-sm text-slate-700">
+                  在专注时，您可以点击右上角的音乐按钮开启背景音，以增加沉浸感
+                </span>
+              </div>
+              <div className="pl-4 flex items-center setting-switch">
+                <Switch
+                  checked={enableLiftSong}
+                  onChange={setEnableLiftSong}
+                  className={`${
+                    enableLiftSong ? "bg-teal-900" : "bg-teal-700"
+                  }
+          relative inline-flex h-[24px] w-[52px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
+                >
+                  <span className="sr-only">Use setting</span>
+                  <span
+                    aria-hidden="true"
+                    className={`${
+                      enableLiftSong ? "translate-x-7" : "translate-x-0"
                     }
             pointer-events-none inline-block h-[20px] w-[20px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
                   />
