@@ -8,6 +8,9 @@ import { IconContext } from "react-icons";
 import useSWR, { Key, Fetcher, SWRConfig, useSWRConfig } from "swr";
 
 import Link from "next/link";
+import { useState } from "react";
+import { Dialog, Switch } from "@headlessui/react";
+import useLocalStorageState from "use-local-storage-state";
 
 export default function Home() {
   const t = useTranslations("Home");
@@ -17,6 +20,12 @@ export default function Home() {
     "https://v1.jinrishici.com/rensheng/lizhi.txt"
   );
 
+  let [isOpenSettings, setIsOpenSettings] = useState(false);
+
+  const [useUnsplash, setUseUnsplash] = useLocalStorageState("useUnsplash", {
+    defaultValue: true,
+  });
+
   return (
     <>
       <Head>
@@ -25,12 +34,78 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="bg-main-unsplash bg-center bg-cover h-screen">
-        <main className="backdrop-brightness-65 h-full w-full">
+      <Dialog
+        open={isOpenSettings}
+        onClose={() => setIsOpenSettings(false)}
+        className="relative z-50"
+      >
+        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <Dialog.Panel className="px-4 py-4 w-full max-w-sm rounded bg-white">
+            <Dialog.Title className="text-lg font-bold">设置</Dialog.Title>
+            <div className="flex flex-col settings-area pt-4">
+              <div className="flex setting-item">
+                <div className="flex flex-col setting-description">
+                  <span className="font-medium">
+                    使用来自 Unsplash 的自然壁纸
+                  </span>
+                  <span className="font-light text-sm text-slate-700">
+                    背景会被替换为 Unsplash
+                    的随机自然背景图，而不是默认的纯色渐变效果
+                  </span>
+                </div>
+                <div className="pl-4 flex items-center setting-switch">
+                  <Switch
+                    checked={useUnsplash}
+                    onChange={setUseUnsplash}
+                    className={`${useUnsplash ? "bg-teal-900" : "bg-teal-700"}
+          relative inline-flex h-[24px] w-[52px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
+                  >
+                    <span className="sr-only">Use setting</span>
+                    <span
+                      aria-hidden="true"
+                      className={`${
+                        useUnsplash ? "translate-x-7" : "translate-x-0"
+                      }
+            pointer-events-none inline-block h-[20px] w-[20px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
+                    />
+                  </Switch>
+                </div>
+              </div>
+            </div>
+          </Dialog.Panel>
+        </div>
+      </Dialog>
+      <div
+        className={
+          useUnsplash
+            ? "bg-main-unsplash bg-center bg-cover h-screen"
+            : "bg-main-blue bg-center bg-cover h-screen"
+        }
+      >
+        <main
+          className={
+            useUnsplash
+              ? "backdrop-brightness-65 h-full w-full"
+              : "h-full w-full"
+          }
+        >
           <div className="flex flex-col h-full">
-            <h1 className="text-4xl font-bold text-white pl-8 md:pl-10 lg:pl-12 pt-10 md:pt-12 lg:pt-14">
-              {t("title_head")}
-            </h1>
+            <div className="flex px-8 md:pl-10 lg:pl-12 pt-10 md:pt-12 lg:pt-14">
+              <h1 className="text-4xl font-bold text-white">
+                {t("title_head")}
+              </h1>
+              <div className="text-white">Beta</div>
+              <div className="grow flex justify-end">
+                <button onClick={() => setIsOpenSettings(true)}>
+                  <IconContext.Provider
+                    value={{ color: "white", size: "2rem" }}
+                  >
+                    <CiSettings />
+                  </IconContext.Provider>
+                </button>
+              </div>
+            </div>
             <div className="text-xl text-slate-200 pl-8 md:pl-10 lg:pl-12 pt-2">
               {error || !data ? "" : data}
             </div>

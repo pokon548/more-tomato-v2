@@ -71,6 +71,10 @@ export default function Tomato() {
 
   const nextPhase = useAppSelector((state) => state.clock.nextPhase);
 
+  const [useUnsplash, setUseUnsplash] = useLocalStorageState("useUnsplash", {
+    defaultValue: true,
+  });
+
   useEffect(() => {
     const timer = setInterval(() => {
       dispatch(decreaseCurrentTimeInSeconds());
@@ -123,12 +127,22 @@ export default function Tomato() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="bg-main-unsplash bg-center bg-cover h-screen">
+      <div
+        className={
+          useUnsplash
+            ? "bg-main-unsplash bg-center bg-cover h-screen"
+            : inShortTermRelaxing || inLongTermRelaxing
+            ? "bg-main-emerald bg-center bg-cover h-screen"
+            : "bg-main-blue bg-center bg-cover h-screen"
+        }
+      >
         <main
           className={
-            dimmingBackground
-              ? "backdrop-brightness-65 backdrop-blur-md h-full w-full transition-all duration-1000"
-              : "backdrop-brightness-65 h-full w-full transition-all duration-1000"
+            useUnsplash
+              ? dimmingBackground
+                ? "backdrop-brightness-65 backdrop-blur-md h-full w-full transition-all duration-1000"
+                : "backdrop-brightness-65 h-full w-full transition-all duration-1000"
+              : "h-full w-full transition-all duration-1000"
           }
         >
           <div className="flex flex-col h-full">

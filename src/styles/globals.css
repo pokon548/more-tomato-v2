@@ -14,6 +14,26 @@
     @apply flex h-52 w-52 sm:w-60 sm:h-60 absolute text-center text-4xl sm:text-5xl text-white outline-0 bg-transparent;
   }
 
+  .bg-main-blue {
+    @apply bg-gradient-to-r from-teal-500 to-blue-500;
+  }
+
+  .bg-main-amber {
+    @apply bg-gradient-to-r from-orange-500 to-amber-500;
+  }
+
+  .bg-main-emerald {
+    @apply bg-gradient-to-r from-emerald-500 to-lime-500;
+  }
+
+  .bg-main-fuchsia {
+    @apply bg-gradient-to-r from-purple-500 to-fuchsia-500;
+  }
+
+  .bg-main-rose {
+    @apply bg-gradient-to-r from-rose-500 to-red-500;
+  }
+
   .bottomArea {
     @apply grid grid-cols-1 justify-items-center
   }
