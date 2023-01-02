@@ -178,7 +178,7 @@ export default function Tomato() {
           className={
             useUnsplash
               ? dimmingBackground
-                ? "backdrop-brightness-65 backdrop-blur-md h-full w-full transition-all duration-1000"
+                ? "backdrop-brightness-65 backdrop-blur-3xl h-full w-full transition-all duration-1000"
                 : "backdrop-brightness-65 h-full w-full transition-all duration-1000"
               : "h-full w-full transition-all duration-1000"
           }
