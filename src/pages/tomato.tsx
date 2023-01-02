@@ -25,7 +25,7 @@ import {
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { colorOptions } from "../settings/SettingsProps";
+import { colorOptions } from "../components/settings/SettingsProps";
 import useIsServerRender from "../components/general/ServerRender";
 
 export default function Tomato() {

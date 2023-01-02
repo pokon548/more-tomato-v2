@@ -1,11 +1,10 @@
 import { Dialog, Listbox, Switch, Transition } from "@headlessui/react";
 import { useTranslations } from "next-intl";
-import { AppProps } from "next/app";
 import { Fragment, useState } from "react";
 import { HiCheck, HiChevronDown } from "react-icons/hi";
 import useLocalStorageState from "use-local-storage-state";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { setDialogOpened } from "../redux/theme/settingSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { setDialogOpened } from "../../redux/theme/settingSlice";
 import { colorOptions } from "./SettingsProps";
 
 export default function SettingsDialog() {

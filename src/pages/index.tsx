@@ -9,10 +9,10 @@ import useSWR from "swr";
 import Link from "next/link";
 import { useSyncExternalStore } from "react";
 import useLocalStorageState from "use-local-storage-state";
-import { colorOptions } from "../settings/SettingsProps";
+import { colorOptions } from "../components/settings/SettingsProps";
 import { useAppDispatch } from "../redux/hooks";
 import { setDialogOpened } from "../redux/theme/settingSlice";
-import SettingsDialog from "../settings/SettingsDialog";
+import SettingsDialog from "../components/settings/SettingsDialog";
 import useIsServerRender from "../components/general/ServerRender";
 
 export default function Home() {
@@ -42,7 +42,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+      <SettingsDialog />
       <div
         className={
           !isServerRender
@@ -58,7 +58,6 @@ export default function Home() {
             : "bg-main-gray bg-center bg-cover h-screen"
         }
       >
-        <SettingsDialog />
         <main
           className={
             useUnsplash
