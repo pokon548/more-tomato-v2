@@ -137,7 +137,7 @@ export default function Tomato() {
             <h1
               className={
                 dimmingBackground
-                  ? "text-4xl font-bold text-slate-400 pl-8 md:pl-10 lg:pl-12 pt-10 md:pt-12 lg:pt-14 transition-all"
+                  ? "text-4xl font-bold text-white/40 pl-8 md:pl-10 lg:pl-12 pt-10 md:pt-12 lg:pt-14 transition-all"
                   : "text-4xl font-bold text-white pl-8 md:pl-10 lg:pl-12 pt-10 md:pt-12 lg:pt-14 transition-all"
               }
             >
@@ -159,7 +159,7 @@ export default function Tomato() {
                   >
                     <IconContext.Provider
                       value={{
-                        color: dimmingBackground ? "rgb(148 163 184)" : "white",
+                        color: dimmingBackground ? "rgb(255 255 255 0.4)" : "white",
                         size: "2.5rem",
                       }}
                     >
@@ -304,7 +304,7 @@ export default function Tomato() {
                     >
                       <IconContext.Provider
                         value={{
-                          color: inWorkTerm ? "rgb(148 163 184)" : "white",
+                          color: inWorkTerm ? "rgb(255 255 255 0.4)" : "white",
                           size: "2rem",
                         }}
                       >
