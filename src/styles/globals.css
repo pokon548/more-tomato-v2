@@ -34,6 +34,10 @@
     @apply bg-gradient-to-r from-rose-500 to-red-500;
   }
 
+  .bg-main-gray {
+    @apply bg-gradient-to-r from-gray-200 to-gray-300;
+  }
+
   .bottomArea {
     @apply grid grid-cols-1 justify-items-center
   }

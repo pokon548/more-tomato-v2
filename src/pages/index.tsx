@@ -9,15 +9,28 @@ import { IconContext } from "react-icons";
 import useSWR, { Key, Fetcher, SWRConfig, useSWRConfig } from "swr";
 
 import Link from "next/link";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useSyncExternalStore } from "react";
 import { Dialog, Listbox, Switch, Transition } from "@headlessui/react";
 import useLocalStorageState from "use-local-storage-state";
+
+// 用于修复组件渲染两次，所导致的状态不一致问题
+function useIsServerRender() {
+  return useSyncExternalStore(
+    () => {
+      return () => {};
+    },
+    () => false,
+    () => true
+  );
+}
 
 export default function Home() {
   const t = useTranslations("Home");
   const gt = useTranslations("Global");
 
-  const themeType = useAppSelector((state) => state.theme.type);
+  const isServerRender = useIsServerRender();
+
+  console.log(isServerRender);
 
   const { data, error } = useSWR<string>(
     "https://v1.jinrishici.com/rensheng/lizhi.txt"
@@ -207,15 +220,17 @@ export default function Home() {
       </Dialog>
       <div
         className={
-          useUnsplash
-            ? "bg-main-unsplash bg-center bg-cover h-screen"
-            : selectedColor.index == colorOptions[0].index
-            ? "bg-main-blue bg-center bg-cover h-screen"
-            : selectedColor.index == colorOptions[1].index
-            ? "bg-main-amber bg-center bg-cover h-screen"
-            : selectedColor.index == colorOptions[2].index
-            ? "bg-main-fuchsia bg-center bg-cover h-screen"
-            : "bg-main-rose bg-center bg-cover h-screen"
+          !isServerRender
+            ? useUnsplash
+              ? "bg-main-unsplash bg-center bg-cover h-screen"
+              : selectedColor.index == colorOptions[0].index
+              ? "bg-main-blue bg-center bg-cover h-screen"
+              : selectedColor.index == colorOptions[1].index
+              ? "bg-main-amber bg-center bg-cover h-screen"
+              : selectedColor.index == colorOptions[2].index
+              ? "bg-main-fuchsia bg-center bg-cover h-screen"
+              : "bg-main-rose bg-center bg-cover h-screen"
+            : "bg-main-gray bg-center bg-cover h-screen"
         }
       >
         <main

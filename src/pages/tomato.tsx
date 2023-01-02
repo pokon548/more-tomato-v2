@@ -24,12 +24,24 @@ import {
 
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+
+// 用于修复组件渲染两次，所导致的状态不一致问题
+function useIsServerRender() {
+  return useSyncExternalStore(
+    () => {
+      return () => {};
+    },
+    () => false,
+    () => true
+  );
+}
 
 export default function Tomato() {
   const t = useTranslations("Tomato");
   const gt = useTranslations("Global");
-  const themeType = useAppSelector((state) => state.theme.type);
+
+  const isServerRender = useIsServerRender();
 
   const [workingTime, setWorkingTime] = useLocalStorageState("workingTime", {
     defaultValue: 25,
@@ -145,19 +157,21 @@ export default function Tomato() {
       </Head>
       <div
         className={
-          useUnsplash
-            ? "bg-main-unsplash bg-center bg-cover h-screen"
-            : inShortTermRelaxing ||
-              inLongTermRelaxing ||
-              (nextPhase.includes("break") && !inWorkTerm)
-            ? "bg-main-emerald bg-center bg-cover h-screen"
-            : selectedColor.index == colorOptions[0].index
-            ? "bg-main-blue bg-center bg-cover h-screen"
-            : selectedColor.index == colorOptions[1].index
-            ? "bg-main-amber bg-center bg-cover h-screen"
-            : selectedColor.index == colorOptions[2].index
-            ? "bg-main-fuchsia bg-center bg-cover h-screen"
-            : "bg-main-rose bg-center bg-cover h-screen"
+          !isServerRender
+            ? useUnsplash
+              ? "bg-main-unsplash bg-center bg-cover h-screen"
+              : inShortTermRelaxing ||
+                inLongTermRelaxing ||
+                (nextPhase.includes("break") && !inWorkTerm)
+              ? "bg-main-emerald bg-center bg-cover h-screen"
+              : selectedColor.index == colorOptions[0].index
+              ? "bg-main-blue bg-center bg-cover h-screen"
+              : selectedColor.index == colorOptions[1].index
+              ? "bg-main-amber bg-center bg-cover h-screen"
+              : selectedColor.index == colorOptions[2].index
+              ? "bg-main-fuchsia bg-center bg-cover h-screen"
+              : "bg-main-rose bg-center bg-cover h-screen"
+            : "bg-main-gray bg-center bg-cover h-screen"
         }
       >
         <main
